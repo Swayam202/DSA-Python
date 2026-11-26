@@ -1,81 +1,77 @@
-# Implementation of BST using Linked List and Level Order Traversal
+# write a function to delete first and last node in SLL
 
-class node:
-    def __init__(self, val):
-        self.left = None
-        self.data = val
-        self.right = None
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
 
-class bst:
+class LinkedList:
     def __init__(self):
-        self.root = None
+        self.head = None
 
-    def insert(self, newnode):
-        if self.root is None:
-            self.root = newnode
+    def insert(self, data):
+        new_node = Node(data)
+
+        if self.head is None:
+            self.head = new_node
             return
 
-        temp = self.root
+        temp = self.head
 
-        while True:
-            if newnode.data < temp.data:
-                if temp.left is None:
-                    temp.left = newnode
-                    return
-                else:
-                    temp = temp.left
+        while temp.next:
+            temp = temp.next
 
-            else:
-                if temp.right is None:
-                    temp.right = newnode
-                    return
-                else:
-                    temp = temp.right
+        temp.next = new_node
 
-    def level_order(self, rt):
-        if rt is None:
-            print("BST empty")
+    def delete_first(self):
+        if self.head is None:
             return
 
-        arr = []
-        cnt = 0
-        level = 0
+        self.head = self.head.next
 
-        arr.append(rt)
+    def delete_last(self):
+        if self.head is None:
+            return
 
-        while cnt < len(arr):
-            node_count = len(arr) - cnt  # Number of nodes in current level
+        if self.head.next is None:
+            self.head = None
+            return
 
-            print("\nLevel:", level, "-", end=" ")
+        temp = self.head
 
-            for i in range(node_count):
-                temp = arr[cnt]
-                cnt += 1
+        while temp.next.next:
+            temp = temp.next
 
-                print(temp.data, end=" ")
+        temp.next = None
 
-                if temp.left is not None:
-                    arr.append(temp.left)
+    def display(self):
+        temp = self.head
 
-                if temp.right is not None:
-                    arr.append(temp.right)
+        while temp:
+            print(temp.data, end=" -> ")
+            temp = temp.next
 
-            level += 1
+        print("None")
 
 
-# Creating BST
-btree = bst()
+l = LinkedList()
 
-btree.insert(node(100))
-btree.insert(node(10))
-btree.insert(node(450))
-btree.insert(node(4))
-btree.insert(node(65))
-btree.insert(node(300))
-btree.insert(node(500))
-btree.insert(node(50))
-btree.insert(node(70))
+l.insert(10)
+l.insert(20)
+l.insert(30)
+l.insert(40)
+l.insert(50)
 
-print("Level Order Traversal:")
-btree.level_order(btree.root)
+print("Original list:")
+l.display()
+
+l.delete_first()
+
+print("After deleting first node:")
+l.display()
+
+l.delete_last()
+
+print("After deleting last node:")
+l.display()
